@@ -208,11 +208,13 @@ public class SingleDatePickerMainActivityWithDoublePicker extends AppCompatActiv
         final Date maxDate = calendarMax.getTime();
 
         doubleBuilder = new DoubleDateAndTimePickerDialog.Builder(this)
-                //.bottomSheet()
-                //.curved()
-
-//                .backgroundColor(Color.BLACK)
-//                .mainColor(Color.GREEN)
+                .bottomSheet()
+                .curved()
+                .mainColor(Color.DKGRAY)
+                .secondaryBackgroundColor(Color.GREEN)
+                .backgroundColor(Color.WHITE)
+                .buttonOkBackgroundColor(Color.GREEN)
+                .buttonOkTextColor(Color.WHITE)
                 .minutesStep(15)
                 .mustBeOnFuture()
 

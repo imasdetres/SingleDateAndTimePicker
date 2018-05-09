@@ -1,6 +1,8 @@
 package com.github.florent37.singledateandtimepicker.dialog;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.support.annotation.ColorInt;
@@ -43,6 +45,11 @@ public class DoubleDateAndTimePickerDialog extends BaseDialog {
     @Nullable
     private Date tab1Date;
     private boolean secondDateAfterFirst;
+
+    @Nullable
+    @ColorInt
+    protected Integer secondaryBackgroundColor = Color.GRAY;
+
     private boolean tab0Days, tab0Hours, tab0Minutes;
     private boolean tab1Days, tab1Hours, tab1Minutes;
 
@@ -145,8 +152,10 @@ public class DoubleDateAndTimePickerDialog extends BaseDialog {
 
         //noinspection deprecation
         buttonTab0.setBackgroundDrawable(getTabsListDrawable());
+        buttonTab0.setTextColor(getTabsTextColorStateList());
         //noinspection deprecation
         buttonTab1.setBackgroundDrawable(getTabsListDrawable());
+        buttonTab1.setTextColor(getTabsTextColorStateList());
 
         final TextView buttonOk = (TextView) view.findViewById(R.id.buttonOk);
         if (buttonOk != null) {
@@ -154,8 +163,14 @@ public class DoubleDateAndTimePickerDialog extends BaseDialog {
                 buttonOk.setText(buttonOkText);
             }
 
-            if (mainColor != null) {
+            if (buttonOkTextColor != null){
+                buttonOk.setTextColor(buttonOkTextColor);
+            } else if (mainColor != null) {
                 buttonOk.setTextColor(mainColor);
+            }
+
+            if (buttonOkBackgroundColor != null){
+                buttonOk.setBackgroundColor(buttonOkBackgroundColor);
             }
         }
 
@@ -249,9 +264,16 @@ public class DoubleDateAndTimePickerDialog extends BaseDialog {
     @NonNull
     private StateListDrawable getTabsListDrawable() {
         final StateListDrawable colorState0 = new StateListDrawable();
-        colorState0.addState(new int[] {android.R.attr.state_selected}, new ColorDrawable(mainColor));
-        colorState0.addState(new int[] {-android.R.attr.state_selected}, new ColorDrawable(backgroundColor));
+        colorState0.addState(new int[] {android.R.attr.state_selected}, new ColorDrawable(backgroundColor));
+        colorState0.addState(new int[] {-android.R.attr.state_selected}, new ColorDrawable(secondaryBackgroundColor));
         return colorState0;
+    }
+
+    @NonNull
+    private ColorStateList getTabsTextColorStateList() {
+        int[][] states = new int[][] { new int[] { android.R.attr.state_selected},  new int[] {-android.R.attr.state_selected} };
+        int[] colors = new int[] {mainColor, backgroundColor};
+        return new ColorStateList(states, colors);
     }
 
     public DoubleDateAndTimePickerDialog setTab0Text(String tab0Text) {
@@ -364,6 +386,10 @@ public class DoubleDateAndTimePickerDialog extends BaseDialog {
         return this;
     }
 
+    public void setSecondaryBackgroundColor(@Nullable Integer secondaryBackgroundColor) {
+        this.secondaryBackgroundColor = secondaryBackgroundColor;
+    }
+
     @Override
     public void display() {
         super.display();
@@ -449,6 +475,18 @@ public class DoubleDateAndTimePickerDialog extends BaseDialog {
 
         @ColorInt
         @Nullable
+        private Integer secondaryBackgroundColor = null;
+
+        @ColorInt
+        @Nullable
+        private Integer buttonOkBackgroundColor = null;
+
+        @ColorInt
+        @Nullable
+        private Integer buttonOkTextColor = null;
+
+        @ColorInt
+        @Nullable
         private Integer mainColor = null;
 
         @ColorInt
@@ -519,6 +557,11 @@ public class DoubleDateAndTimePickerDialog extends BaseDialog {
 
         public DoubleDateAndTimePickerDialog.Builder backgroundColor(@NonNull @ColorInt int backgroundColor) {
             this.backgroundColor = backgroundColor;
+            return this;
+        }
+
+        public DoubleDateAndTimePickerDialog.Builder secondaryBackgroundColor(@NonNull @ColorInt int backgroundColor) {
+            this.secondaryBackgroundColor = backgroundColor;
             return this;
         }
 
@@ -608,6 +651,16 @@ public class DoubleDateAndTimePickerDialog extends BaseDialog {
             return this;
         }
 
+        public DoubleDateAndTimePickerDialog.Builder buttonOkTextColor(@NonNull @ColorInt int buttonOkTextColor) {
+            this.buttonOkTextColor = buttonOkTextColor;
+            return this;
+        }
+
+        public DoubleDateAndTimePickerDialog.Builder buttonOkBackgroundColor(@NonNull @ColorInt int buttonOkBackgroundColor) {
+            this.buttonOkBackgroundColor = buttonOkBackgroundColor;
+            return this;
+        }
+
         public DoubleDateAndTimePickerDialog build() {
             final DoubleDateAndTimePickerDialog dialog = new DoubleDateAndTimePickerDialog(context, bottomSheet)
                     .setTitle(title)
@@ -639,6 +692,18 @@ public class DoubleDateAndTimePickerDialog extends BaseDialog {
 
             if (backgroundColor != null) {
                 dialog.setBackgroundColor(backgroundColor);
+            }
+
+            if (secondaryBackgroundColor != null) {
+                dialog.setSecondaryBackgroundColor(secondaryBackgroundColor);
+            }
+
+            if (buttonOkBackgroundColor != null) {
+                dialog.setButtonOkBackgroundColor(buttonOkBackgroundColor);
+            }
+
+            if (buttonOkTextColor != null) {
+                dialog.setButtonOkTextColor(buttonOkTextColor);
             }
 
             if (titleTextColor != null) {

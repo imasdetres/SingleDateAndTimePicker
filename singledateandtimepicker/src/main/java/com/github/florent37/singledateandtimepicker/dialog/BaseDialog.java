@@ -35,6 +35,14 @@ public abstract class BaseDialog {
     @ColorInt
     protected Integer titleTextColor = null;
 
+    @Nullable
+    @ColorInt
+    protected Integer buttonOkTextColor = null;
+
+    @Nullable
+    @ColorInt
+    protected Integer buttonOkBackgroundColor = null;
+
     protected boolean okClicked = false;
     protected boolean curved = false;
     protected boolean mustBeOnFuture = false;
@@ -88,5 +96,13 @@ public abstract class BaseDialog {
 
     protected void onClose() {
         this.isDisplaying = false;
+    }
+
+    public void setButtonOkTextColor(@ColorInt Integer buttonOkTextColor) {
+        this.buttonOkTextColor = buttonOkTextColor;
+    }
+
+    public void setButtonOkBackgroundColor(@ColorInt Integer buttonOkBackgroundColor) {
+        this.buttonOkBackgroundColor = buttonOkBackgroundColor;
     }
 }
